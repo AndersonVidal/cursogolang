@@ -37,7 +37,7 @@ func main() {
 
 	defer db.Close()
 
-	err = createTable(db)
+	err = createQuotationTable(db)
 	if err != nil {
 		log.Panic("[CONN] Database creation error: " + err.Error())
 	}
@@ -127,8 +127,8 @@ func GetQuotation() (*Quotation, error) {
 
 // DATABASE
 
-func createTable(db *sql.DB) error {
-	createTable := `
+func createQuotationTable(db *sql.DB) error {
+	query := `
 	CREATE TABLE IF NOT EXISTS quotations (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		code TEXT,
@@ -144,10 +144,10 @@ func createTable(db *sql.DB) error {
 		create_date TEXT
 	);`
 
-	_, err := db.Exec(createTable)
+	_, err := db.Exec(query)
 
 	if err != nil {
-		log.Println("[CREATE-TABLE] Create quotations table failed: " + err.Error())
+		log.Println("[CREATE-QUOTATION-TABLE] Create quotations table failed: " + err.Error())
 		return err
 	}
 
